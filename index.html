@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seven Checker</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #dropZone {
+            width: 200px;
+            height: 100px;
+            border: 2px dashed #3498db;
+            text-align: center;
+            line-height: 100px;
+            margin: 20px;
+            color: #3498db;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #inputContainer {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #inputField {
+            padding: 15px; /* Increased input size */
+            font-size: 18px; /* Increased font size */
+            width: 250px; /* Increased width */
+            box-sizing: border-box;
+        }
+
+        #result {
+            font-size: 18px;
+            color: #00000F;
+            font-weight: bold;
+        }
+
+        #result.thala {
+            color: #2ecc71;
+        }
+
+        #shareLinks {
+            margin-top: 20px;
+        }
+
+        #shareLinks a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #3498db;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="inputContainer">
+        <input type="text" id="inputField" oninput="checkInput(this.value)">
+        <p id="result"></p>
+    </div>
+
+    <div id="shareLinks">
+        <a href="whatsapp://send?text=Check%20this%20out%20%23SevenChecker%20https%3A%2F%2Fyour-website-url.com" target="_blank">WhatsApp</a>
+        <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fyour-website-url.com&text=Check%20this%20out%20%23SevenChecker" target="_blank">Twitter</a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fyour-website-url.com" target="_blank">Facebook</a>
+    </div>
+
+    <audio id="audioPlayer" src="bole_jo_koyal.mp3"></audio>
+
+    <script>
+        var audioPlayer = document.getElementById("audioPlayer");
+
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+
+        function drop(event) {
+            event.preventDefault();
+            var data = event.dataTransfer.getData("text");
+            document.getElementById("inputField").value = data;
+            checkInput(data);
+        }
+
+        function checkInput(input) {
+            var resultElement = document.getElementById("result");
+
+            if (!isNaN(input)) {
+                // Input is a number
+                var sum = input.toString().split('').reduce((acc, digit) => acc + parseInt(digit), 0);
+                if (sum === 7) {
+                    resultElement.textContent = `${input} has digits ${input.split('').join('+')} Thala for a reason!`;
+                    playAudio();
+                } else {
+                    resultElement.textContent = "";
+                    pauseAudio();
+                }
+            } else if (typeof input === 'string') {
+                // Input is a string
+                if (input.length === 7) {
+                    resultElement.textContent = `${input} has ${input.length} letters (${input.split('').join(',')}) Thala for a reason!`;
+                    playAudio();
+                } else {
+                    resultElement.textContent = "";
+                    pauseAudio();
+                }
+            } else {
+                resultElement.textContent = "";
+                pauseAudio();
+            }
+        }
+
+        function playAudio() {
+            audioPlayer.play();
+        }
+
+        function pauseAudio() {
+            audioPlayer.pause();
+            audioPlayer.currentTime = 0; // Reset the audio to the beginning
+        }
+    </script>
+
+</body>
+</html>
